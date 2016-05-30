@@ -10,8 +10,7 @@
 using namespace cv;
 using namespace std;
 
-Mat SourceImg, edges;
-
+Mat edges;
 int figure_no;
 
 vector<Point2f> fig_mass_center;
@@ -71,7 +70,7 @@ void txtWrite(int no) {
 }
 
 Mat imgProcessing(Mat SourceImg) {
-	
+
 	Mat gray, morph, morph2, thresh;
 
 	cvtColor(SourceImg, gray, CV_BGR2GRAY);
@@ -87,7 +86,7 @@ Mat imgProcessing(Mat SourceImg) {
 }
 
 int imgArea(vector<vector<Point>> contours) {
-	
+
 	int area_max = 0;
 	for (int i = 0; i < contours.size(); i++)
 	{
@@ -116,7 +115,7 @@ void imgMoments(vector<vector<Point>> contours, vector<Vec4i> hierarchy) {
 	int a = mc[figure_no].x; //with bound checking .at(i).x ??wtf??
 	int b = mc[figure_no].y;
 	fig_mass_center.push_back(Point2f(a, b));
-	
+
 	RNG rng(time(NULL));
 	Mat drawing = Mat::zeros(edges.size(), CV_8UC3);
 	for (int i = 0; i < contours.size(); i++)
@@ -125,7 +124,7 @@ void imgMoments(vector<vector<Point>> contours, vector<Vec4i> hierarchy) {
 		drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
 		circle(drawing, mc[i], 4, color, -1, 8, 0);
 	}
-	
+
 	namedWindow("WINDOW", CV_WINDOW_AUTOSIZE);
 	imshow("WINDOW", drawing);
 }
@@ -133,6 +132,7 @@ void imgMoments(vector<vector<Point>> contours, vector<Vec4i> hierarchy) {
 
 void training(vector<String>image) {
 
+	Mat SourceImg;
 	//vector<Mat> data;
 	for (size_t k = 0; k<image.size(); ++k)
 	{
@@ -173,6 +173,6 @@ int main()
 	training(image);
 	novelty_data = dataa;
 	txtWrite(3);
-	
+
 	waitKey(0);
 }
